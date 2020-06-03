@@ -86,7 +86,7 @@ public class NewCurrencyTest {
         for (String currency : Constants.CURRENCY) {
             Response response = given().expect().spec(ResponseSpecs.historicalFieldsSpec)
                     .when().get(Endpoints.historicalCurrency, Constants.ACCESS_KEY, Constants.VALID_DATE, currency);
-            response.body().prettyPrint();
+//            response.body().prettyPrint();
             response.then().body("source", equalTo(Constants.CURRENCY.get(0)))
                     .and().body(String.format("quotes.%s%s", Constants.CURRENCY.get(0), currency), notNullValue());
         }

@@ -19,8 +19,7 @@ public class ResponseSpecs {
             .body("terms", notNullValue())
             .body("privacy", notNullValue())
             .body("timestamp", notNullValue())
-            .body("source", equalTo(Constants.CURRENCY.get(0)))
-            .body(String.format("quotes.%s%s", Constants.CURRENCY.get(0), Constants.CURRENCY.get(1)), notNullValue());
+            .body("source", equalTo(Constants.CURRENCY.get(0)));
 
     public static final ResponseSpecification historicalFieldsSpec = expect()
             .statusCode(Constants.STATUS_OK)
@@ -30,8 +29,7 @@ public class ResponseSpecs {
             .body("historical", equalTo(true))
             .body("date", equalTo(Constants.VALID_DATE))
             .body("timestamp", notNullValue())
-            .body("source", equalTo(Constants.CURRENCY.get(0)))
-            .body(String.format("quotes.%s%s", Constants.CURRENCY.get(0), Constants.CURRENCY.get(1)), notNullValue());
+            .body("source", equalTo(Constants.CURRENCY.get(0)));
 
     public static final ResponseSpecification invalidEndpointSpec = expect()
             .statusCode(Constants.STATUS_OK)

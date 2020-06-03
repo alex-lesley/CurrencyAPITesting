@@ -16,16 +16,16 @@ public class Constants {
     public static final String CURRENCY_LIST_WITH_INVALID_ONE = "CAD,EUR,ILS,RUB,USD,WER";
     public static final ArrayList<String> CURRENCY = new ArrayList<>();
 
-    public static final int STATUS_OK = 200;
-    public static final int INVALID_RESOURCE_CODE = 404;
     public static final int KEY_ERROR = 101;
+    public static final int ACCOUNT_NOT_ACTIVE_ERROR = 102;
     public static final int INVALID_ENDPOINT_ERROR = 103;
     public static final int ILLEGAL_REQUEST_ERROR = 105;
-    public static final int ACCOUNT_NOT_ACTIVE_ERROR = 102;
-    public static final int INVALID_CURRENCY_ERROR = 202;
+    public static final int STATUS_OK = 200;
     public static final int INVALID_SOURCE_CURRENCY_ERROR = 201;
+    public static final int INVALID_CURRENCY_ERROR = 202;
     public static final int NO_DATE_ERROR = 301;
     public static final int INVALID_DATE_ERROR = 302;
+    public static final int INVALID_RESOURCE_CODE = 404;
 
     public static final String MISSING_KEY_ERROR_TYPE = "missing_access_key";
     public static final String INVALID_KEY_ERROR_TYPE = "invalid_access_key";

@@ -41,7 +41,8 @@ public class NewCurrencyTest {
     @Test
     public void responseBodyLiveFieldsTest() {
         given().expect().spec(ResponseSpecs.liveFieldsSpec)
-                .when().get(Endpoints.live, Constants.ACCESS_KEY);
+                .when().get(Endpoints.live, Constants.ACCESS_KEY)
+                .then().body(String.format("quotes.%s%s", Constants.CURRENCY.get(0), Constants.CURRENCY.get(1)), notNullValue());
     }
 
     @Test
@@ -56,7 +57,7 @@ public class NewCurrencyTest {
     @Test
     public void liveOneCurrencyTest() {
         for (String currency : Constants.CURRENCY) {
-            Response response = given().expect().spec(ResponseSpecs.validKeySpec)
+            Response response = given().expect().spec(ResponseSpecs.liveFieldsSpec)
                     .when().get(Endpoints.liveCurrency, Constants.ACCESS_KEY, currency);
 //            response.body().prettyPrint();
             response.then().body("source", equalTo(Constants.CURRENCY.get(0)))
@@ -76,7 +77,28 @@ public class NewCurrencyTest {
     @Test
     public void responseBodyHistoricalFieldsTest() {
         given().expect().spec(ResponseSpecs.historicalFieldsSpec)
-                .when().get(Endpoints.historical, Constants.ACCESS_KEY, Constants.VALID_DATE);
+                .when().get(Endpoints.historical, Constants.ACCESS_KEY, Constants.VALID_DATE)
+                .then().body(String.format("quotes.%s%s", Constants.CURRENCY.get(0), Constants.CURRENCY.get(1)), notNullValue());
+    }
+
+    @Test
+    public void historicalOneCurrencyTest() {
+        for (String currency : Constants.CURRENCY) {
+            Response response = given().expect().spec(ResponseSpecs.historicalFieldsSpec)
+                    .when().get(Endpoints.historicalCurrency, Constants.ACCESS_KEY, Constants.VALID_DATE, currency);
+            response.body().prettyPrint();
+            response.then().body("source", equalTo(Constants.CURRENCY.get(0)))
+                    .and().body(String.format("quotes.%s%s", Constants.CURRENCY.get(0), currency), notNullValue());
+        }
+    }
+
+    @Test
+    public void historicalCurrenciesListTest() {
+        Response response = given().expect().spec(ResponseSpecs.historicalFieldsSpec)
+                .when().get(Endpoints.historicalCurrency, Constants.ACCESS_KEY, Constants.VALID_DATE, Constants.CURRENCY_LIST);
+        for (String currency : Constants.CURRENCY) {
+            response.then().body(String.format("quotes.%s%s", Constants.CURRENCY.get(0), currency), notNullValue());
+        }
     }
 
     @Test
@@ -108,7 +130,7 @@ public class NewCurrencyTest {
     @Test
     public void illegalSourceParameterLiveTest() {  // out of subscription plan
         given().expect().spec(ResponseSpecs.illegalRequestSpec)
-                .when().get(Endpoints.illegalLiveParameter, Constants.ACCESS_KEY, Constants.CURRENCY_LIST);
+                .when().get(Endpoints.liveSource, Constants.ACCESS_KEY, Constants.CURRENCY.get(1), Constants.CURRENCY_LIST);
     }
 
     @Test
@@ -129,7 +151,7 @@ public class NewCurrencyTest {
     @Test
     public void invalidSourceParameterLiveTest() {
         given().expect().spec(ResponseSpecs.invalidSourceCurrencySpec)
-                .when().get(Endpoints.invalidLiveParameter, Constants.ACCESS_KEY, Constants.CURRENCY_LIST);
+                .when().get(Endpoints.liveSource, Constants.ACCESS_KEY, Constants.INVALID_CURRENCY, Constants.CURRENCY_LIST);
     }
 
     @Test
@@ -145,7 +167,7 @@ public class NewCurrencyTest {
     }
 
     @Test
-    public void historicalFUTUREDateTest() {
+    public void historicalFutureDateTest() {
         given().expect().spec(ResponseSpecs.historicalInvalidDateSpec)
                 .when().get(Endpoints.historical, Constants.ACCESS_KEY, Constants.FUTURE_DATE);
     }
